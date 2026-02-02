@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For You ❤️</title>
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 2;
+      max-width: 90%;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    #yesBtn {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #adb5bd;
+      position: absolute;
+    }
+
+    /* Hearts */
+    .heart {
+      position: fixed;
+      top: -20px;
+      font-size: 24px;
+      animation: fall linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    /* Slideshow */
+    .slideshow {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+   .slideshow img {
+  width: 420px;          /* 👈 bigger for laptop */
+  max-width: 90vw;       /* 👈 shrink on small screens */
+  height: auto;          /* 👈 keep natural ratio */
+  max-height: 70vh;      /* 👈 don’t overflow screen */
+  object-fit: cover;
+  border-radius: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  animation: fadeIn 1s ease;
+}
+	.slideshow img {
+  display: block;
+  margin: 0 auto;   /* 👈 forces horizontal centering */
+}
+
+
+    .caption {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #444;
+      animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card" id="card">
+    <h1>Will you be my Valentine? ❤️</h1>
+    <button id="yesBtn" onclick="yesClicked()">Yes 💖</button>
+    <button id="noBtn">No 😅</button>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="love.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const music = document.getElementById("bgMusic");
+
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+
+    function yesClicked() {
+      document.getElementById("card").innerHTML = `
+        <h1>Thanks for choosing me.....
+          I choose you, <span style="color:#ff4d6d;">My Khushi</span> ❤️<br>
+          Today, tomorrow, and always.
+        </h1>
+
+        <div class="slideshow">
+          <img id="slideImg">
+          <div class="caption" id="slideText"></div>
+        </div>
+      `;
+
+      music.play();
+      startHeartShower();
+      startSlideshow();
+    }
+
+    /* ❤️ Heart Shower */
+    function startHeartShower() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }, 200);
+    }
+
+    /* 🎞️ Slideshow */
+    const slides = [
+      { img: "images/img1.jpg", text: "The smile that stole my heart ❤️" },
+      { img: "images/img2.jpg", text: "Every moment with you feels like home" },
+      { img: "images/img3.jpg", text: "My favorite person in every universe" },
+      { img: "images/img4.jpg", text: "And I want a lifetime of this with you" }
+    ];
+
+    let currentSlide = 0;
+
+    function startSlideshow() {
+      showSlide();
+    }
+
+    function showSlide() {
+      const img = document.getElementById("slideImg");
+      const text = document.getElementById("slideText");
+
+      if (currentSlide < slides.length) {
+        img.style.display = "block";
+        img.src = slides[currentSlide].img;
+        text.innerText = slides[currentSlide].text;
+        currentSlide++;
+        setTimeout(showSlide, 4000);
+      } else {
+        setTimeout(showFinalSlide, 3000);
+      }
+    }
+
+    function showFinalSlide() {
+      const img = document.getElementById("slideImg");
+      const text = document.getElementById("slideText");
+
+      img.style.display = "none";
+      text.innerHTML = `
+        <div style="
+          font-size: 30px;
+          font-weight: bold;
+          color: #ff4d6d;
+          margin-top: 40px;
+          animation: fadeIn 2s ease;
+        ">
+          Will you be mine forever? ❤️
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
